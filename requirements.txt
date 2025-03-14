@@ -1,0 +1,6 @@
+asgiref==3.8.1 ; python_version >= "3.13"
+django==5.1.7 ; python_version >= "3.13"
+psycopg-binary==3.2.6 ; python_version >= "3.13" and implementation_name != "pypy"
+psycopg==3.2.6 ; python_version >= "3.13"
+sqlparse==0.5.3 ; python_version >= "3.13"
+tzdata==2025.1 ; python_version >= "3.13" and sys_platform == "win32"
