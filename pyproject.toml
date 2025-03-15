@@ -2,17 +2,17 @@
 name = "django-template"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "harold",email = "harold.k.basa@gmail.com"}
-]
-readme = "README.md"
+authors = [{ name = "harold", email = "harold.k.basa@gmail.com" }]
 requires-python = ">=3.13"
+readme = "README.md"
 dependencies = [
     "django (>=5.1.7,<6.0.0)",
     "psycopg[binary] (>=3.2.6,<4.0.0)",
 ]
 
-
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.uv]
+package = false
