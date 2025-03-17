@@ -1,0 +1,35 @@
+PROJECT_NAME := $(notdir $(shell pwd))
+CONTAINER_NAME := $(PROJECT_NAME)-web-1
+
+build:
+	docker compose build
+
+up:
+	docker compose up
+
+down:
+	docker compose down
+
+stop:
+	docker compose stop
+
+restart:
+	docker compose restart
+
+sh:
+	docker exec -it $(CONTAINER_NAME) sh
+
+fmt:
+	uv run ruff check --select I --fix .
+	uv run ruff format
+
+lint:
+	uv run ruff check
+
+type-check:
+	uv run mypy .
+
+checks: fmt lint type-check
+
+requirements:
+	uv export --no-group dev --no-hashes --format requirements-txt > requirements.txt
