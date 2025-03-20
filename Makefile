@@ -19,6 +19,12 @@ restart:
 sh:
 	docker exec -it $(CONTAINER_NAME) sh
 
+migrations:
+	docker exec $(CONTAINER_NAME) sh -c "python manage.py makemigrations --name $(name) $(app)"
+
+migrate:
+	docker exec $(CONTAINER_NAME) sh -c "python manage.py migrate"
+
 fmt:
 	uv run ruff check --select I --fix .
 	uv run ruff format
