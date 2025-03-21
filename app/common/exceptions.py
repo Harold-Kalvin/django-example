@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from ninja_extra import status
+
 from common.enums import AuthErrorCode, ErrorCode
 
 
@@ -17,4 +19,4 @@ class GenericAPIError(Exception):
 class InvalidCredentialsError(GenericAPIError):
     error_message: str = "No active account found with the given credentials."
     error_code: ErrorCode = AuthErrorCode.INVALID_CREDENTIALS
-    http_code: int = 401
+    http_code: int = status.HTTP_401_UNAUTHORIZED
