@@ -10,9 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import base64
 import os
-from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # third party
+    "allauth",
+    "allauth.account",
+    "allauth.headless",
+    # local
     "authentication",
 ]
 
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "site_example.urls"
@@ -127,10 +131,50 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "authentication.User"
 
-NINJA_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "ALGORITHM": "ES256",
-    "SIGNING_KEY": base64.b64decode(os.environ["JWT_SIGNING_KEY_B64"]).decode("utf-8"),
-    "VERIFYING_KEY": base64.b64decode(os.environ["JWT_VERIFYING_KEY_B64"]).decode("utf-8"),
+AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend",)
+
+
+# Sessions
+
+# sets django-allauth's session token expiry date among other things
+SESSION_COOKIE_AGE = 1209600  # 2 weeks, in seconds
+
+
+# django-allauth
+# https://github.com/pennersr/django-allauth
+
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+ACCOUNT_LOGIN_METHODS = {"email"}
+
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = False
+
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
+
+HEADLESS_ONLY = True
+
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "/account/verify-email/{key}",
+    "account_reset_password": "/account/password/reset",
+    "account_reset_password_from_key": "/account/password/reset/key/{key}",
+    "account_signup": "/account/signup",
+    "socialaccount_login_error": "/account/provider/callback",
 }
+HEADLESS_SERVE_SPECIFICATION = True
+
+HEADLESS_SPECIFICATION_TEMPLATE_NAME = "headless/spec/swagger_cdn.html"
+
+
+# Email
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = os.environ["EMAIL_HOST"]
+
+EMAIL_HOST_USER = os.environ["EMAIL_CONTACT_USER"]
+
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_CONTACT_PASSWORD"]
+
+EMAIL_PORT = os.environ["EMAIL_PORT"]
