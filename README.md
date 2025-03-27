@@ -1,2 +1,2 @@
-# django-template
-A django template project with authentication
+# django-example
+A django example project with django-ninja and authentication
