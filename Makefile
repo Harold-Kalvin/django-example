@@ -1,6 +1,8 @@
 PROJECT_NAME := $(notdir $(shell pwd))
 CONTAINER_NAME := $(PROJECT_NAME)-web-1
 
+all: down build up
+
 build:
 	docker compose build
 
