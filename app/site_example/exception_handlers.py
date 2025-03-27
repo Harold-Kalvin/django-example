@@ -4,9 +4,8 @@ from typing import TypedDict
 from django.http import Http404, HttpRequest, JsonResponse
 from ninja.errors import HttpError, ValidationError
 from ninja_extra import status
-from ninja_jwt.exceptions import TokenError
 
-from common.enums import AuthErrorCode, CommonErrorCode, ErrorCode, HttpErrorCode
+from common.enums import CommonErrorCode, ErrorCode, HttpErrorCode
 from common.exceptions import GenericAPIError
 from common.mappings import HTTP_ERROR_CODE_MAPPING
 
@@ -73,16 +72,6 @@ def ninja_validation_error_handler(
         error_message=message,
         http_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         details=details or None,
-    )
-
-
-def ninja_jwt_token_error_handler(
-    request: HttpRequest, exc: TokenError | type[TokenError]
-) -> JsonResponse:
-    return _error_response(
-        error_code=AuthErrorCode.INVALID_TOKEN,
-        error_message="Token is invalid or expired.",
-        http_code=status.HTTP_401_UNAUTHORIZED,
     )
 
 
