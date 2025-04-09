@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import urljoin
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = [os.environ["ALLOWED_DOMAIN"]]
 
 
 # Application definition
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party
+    "corsheaders",
     "allauth",
     "allauth.account",
     "allauth.headless",
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -139,6 +142,22 @@ AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend"
 # sets django-allauth's session token expiry date among other things
 SESSION_COOKIE_AGE = 1209600  # 2 weeks, in seconds
 
+SESSION_COOKIE_DOMAIN = os.environ["ALLOWED_DOMAIN"]
+
+
+# Csrf
+
+CSRF_TRUSTED_ORIGINS = [os.environ["ALLOWED_ORIGIN"]]
+
+CSRF_COOKIE_DOMAIN = os.environ["ALLOWED_DOMAIN"]
+
+
+# django-cors-headers
+
+CORS_ALLOWED_ORIGINS = [os.environ["ALLOWED_ORIGIN"]]
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 # django-allauth
 # https://github.com/pennersr/django-allauth
@@ -151,14 +170,30 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = False
 
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
+
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_TIMEOUT = 900
+
+ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS = False
+
+ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
+
+ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS = 3
+
+ACCOUNT_PASSWORD_RESET_BY_CODE_TIMEOUT = 180
+
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+
 HEADLESS_ONLY = True
 
 HEADLESS_FRONTEND_URLS = {
-    "account_confirm_email": "/account/verify-email/{key}",
-    "account_reset_password": "/account/password/reset",
-    "account_reset_password_from_key": "/account/password/reset/key/{key}",
-    "account_signup": "/account/signup",
-    "socialaccount_login_error": "/account/provider/callback",
+    "account_confirm_email": urljoin(os.environ["ALLOWED_ORIGIN"], "/verify-email/{key}"),
+    "account_reset_password": urljoin(os.environ["ALLOWED_ORIGIN"], "/password/reset"),
+    "account_reset_password_from_key": urljoin(
+        os.environ["ALLOWED_ORIGIN"], "/password/reset/key/{key}"
+    ),
+    "account_signup": urljoin(os.environ["ALLOWED_ORIGIN"], "/signup"),
+    "socialaccount_login_error": urljoin(os.environ["ALLOWED_ORIGIN"], "/provider/callback"),
 }
 HEADLESS_SERVE_SPECIFICATION = True
 
