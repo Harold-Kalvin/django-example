@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.headless",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.facebook",
     "allauth.socialaccount.providers.google",
     # local
     "authentication",
@@ -196,7 +195,6 @@ SOCIALACCOUNT_PROVIDERS = {
         "APP": {
             "client_id": os.environ["GOOGLE_CLIENT_ID"],
             "secret": os.environ["GOOGLE_CLIENT_SECRET"],
-            "key": "",
         },
         "SCOPE": ["profile", "email"],
         "AUTH_PARAMS": {"access_type": "online"},
