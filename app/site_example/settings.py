@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.headless",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.google",
     # local
     "authentication",
 ]
@@ -183,6 +186,22 @@ ACCOUNT_PASSWORD_RESET_BY_CODE_MAX_ATTEMPTS = 3
 ACCOUNT_PASSWORD_RESET_BY_CODE_TIMEOUT = 180
 
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True  # True only with trusted providers
+
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": os.environ["GOOGLE_CLIENT_ID"],
+            "secret": os.environ["GOOGLE_CLIENT_SECRET"],
+            "key": "",
+        },
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
+}
 
 HEADLESS_ONLY = True
 
