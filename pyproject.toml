@@ -19,6 +19,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "django-stubs[compatible-mypy]>=5.1.3",
+    "djlint>=1.36.4",
     "mypy>=1.15.0",
     "ruff>=0.11.0",
 ]
@@ -82,3 +83,20 @@ no_implicit_optional = true
 check_untyped_defs = true
 warn_return_any = true
 warn_unused_ignores = true
+
+[tool.djlint]
+indent=2
+format_css=true
+format_js=true
+blank_line_after_tag="load,extends,include"
+blank_line_before_tag="load,extends,include"
+line_break_after_multiline_tag=true
+ignore="H031"
+custom_blocks="setvar"  # set in allauth.account
+
+[tool.djlint.css]
+indent_size=2
+
+[tool.djlint.js]
+indent_size=2
+

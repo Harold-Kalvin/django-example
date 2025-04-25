@@ -39,5 +39,13 @@ type-check:
 
 checks: fmt lint type-check
 
+fmt-templates:
+	uv run djlint . --reformat
+
+lint-templates:
+	uv run djlint . --lint
+
+checks-templates: fmt-templates lint-templates
+
 requirements:
 	uv export --no-group dev --no-hashes --format requirements-txt > requirements.txt
