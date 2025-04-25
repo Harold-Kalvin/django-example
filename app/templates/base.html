@@ -1,0 +1,51 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Example site description">
+    <title>
+      {% block head_title %}
+        {% trans "Example site" %}
+      {% endblock %}
+    </title>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <a href="/">Home</a>
+          </li>
+          {% if user.is_authenticated %}
+            <li>
+              <form id="logout-form" method="post" action="{% url "account_logout" %}">
+                {% csrf_token %}
+                <button type="submit">
+                  {% trans "Logout" %}
+                </button>
+              </form>
+            </li>
+            <li>
+              <a href="/profile/">{% trans "Profile" %}</a>
+            </li>
+          {% else %}
+            <li>
+              <a href="/login/">{% trans "Login" %}</a>
+            </li>
+            <li>
+              <a href="/signup/">{% trans "Sign up" %}</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+  </body>
+</html>
