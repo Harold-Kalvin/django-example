@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}
+  {% trans "Sign up" %}
+{% endblock %}
+{% block content %}
+  <h1>
+    {% trans "Sign up" %}
+  </h1>
+  <form method="post" action="{% url "account_signup" %}">
+    {% csrf_token %}
+    {% if form.errors %}
+      <div>
+        <ul>
+          {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              <li>
+                {{ error }}
+              </li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <div>
+      <label for="id_email">
+        {{ form.email.label }}
+      </label>
+      {{ form.email }}
+    </div>
+    <div>
+      <label for="id_password1">
+        {{ form.password1.label }}
+      </label>
+      {{ form.password1 }}
+    </div>
+    <div>
+      <label for="id_password2">
+        {{ form.password2.label }}
+      </label>
+      {{ form.password2 }}
+    </div>
+    <button type="submit">
+      {% trans "Sign up" %}
+    </button>
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+{% endblock %}

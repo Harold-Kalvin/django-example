@@ -67,7 +67,7 @@ ROOT_URLCONF = "site_example.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -138,6 +138,9 @@ AUTH_USER_MODEL = "authentication.User"
 
 AUTHENTICATION_BACKENDS = ("allauth.account.auth_backends.AuthenticationBackend",)
 
+LOGIN_URL = "/login/"
+
+LOGIN_REDIRECT_URL = "/profile/"
 
 # Sessions
 
@@ -201,7 +204,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-HEADLESS_ONLY = True
+HEADLESS_ONLY = False
 
 HEADLESS_FRONTEND_URLS = {
     "account_confirm_email": urljoin(os.environ["ALLOWED_ORIGIN"], "/verify-email/{key}"),
