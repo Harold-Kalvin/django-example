@@ -1,4 +1,6 @@
 from allauth.account import views as allauth_views  # type: ignore
+from allauth.socialaccount.providers.google.provider import GoogleProvider  # type: ignore
+from allauth.socialaccount.providers.oauth2.urls import default_urlpatterns  # type: ignore
 from django.urls import path
 from django.views.generic.base import TemplateView
 
@@ -28,3 +30,6 @@ urlpatterns = [
     # local views
     path("profile/", TemplateView.as_view(template_name="account/profile.html")),
 ]
+
+# social login routes
+urlpatterns += default_urlpatterns(GoogleProvider)

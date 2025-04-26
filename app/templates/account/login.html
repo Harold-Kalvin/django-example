@@ -2,6 +2,8 @@
 
 {% load i18n %}
 
+{% load socialaccount %}
+
 {% block head_title %}
   {% trans "Login" %}
 {% endblock %}
@@ -42,4 +44,20 @@
     <input type="hidden" name="next" value="{{ next }}">
   </form>
   <a href="/password/reset/">{% trans "Forgotten password?" %}</a>
+  <form method="post" action="{% provider_login_url "google" %}">
+    {% csrf_token %}
+    <button type="submit"
+            style="background-color: white;
+                   color: #555;
+                   border: 1px solid #ccc;
+                   padding: 10px 20px;
+                   border-radius: 4px">
+      <img src="https://developers.google.com/identity/images/g-logo.png"
+           alt="Google Logo"
+           style="width:20px;
+                  vertical-align:middle;
+                  margin-right:10px">
+      Sign in with Google
+    </button>
+  </form>
 {% endblock %}
