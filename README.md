@@ -16,4 +16,3 @@ docker compose up
 The backend will be available at `http://localhost:8000` (The swagger page at: `http://localhost:8000/api/docs`).
 
 
-
